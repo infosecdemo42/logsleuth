@@ -20,3 +20,10 @@ def test_stats_command(access_log, capsys):
     assert cli.main(["stats", str(access_log)]) == 0
     summary = json.loads(capsys.readouterr().out)
     assert summary["requests"] == 15
+
+
+def test_stats_auth(auth_log, capsys):
+    assert cli.main(["stats", str(auth_log)]) == 0
+    summary = json.loads(capsys.readouterr().out)
+    assert summary["failed_logins"] == 7
+    assert summary["accepted_users"] == ["alice", "deploy"]

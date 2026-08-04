@@ -44,3 +44,18 @@ def summarize_access(entries: Iterable) -> dict:
         "top_ips": top_n(count_by(entries, lambda e: e.ip)),
         "top_paths": top_n(count_by(entries, lambda e: e.path)),
     }
+
+
+def summarize_auth(entries: Iterable) -> dict:
+    """Summary of an auth.log: failed/accepted logins and the noisiest sources."""
+    entries = list(entries)
+    failed = [e.failed_login for e in entries if e.failed_login]
+    accepted = [e.accepted_login for e in entries if e.accepted_login]
+    return {
+        "lines": len(entries),
+        "failed_logins": len(failed),
+        "accepted_logins": len(accepted),
+        "top_failed_ips": top_n(Counter(f["ip"] for f in failed)),
+        "top_failed_users": top_n(Counter(f["user"] for f in failed)),
+        "accepted_users": sorted({a["user"] for a in accepted}),
+    }

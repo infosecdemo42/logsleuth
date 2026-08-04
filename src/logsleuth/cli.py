@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Iterable, Optional, Sequence
 
 from logsleuth import stats
-from logsleuth.parsers import nginx
+from logsleuth.parsers import nginx, syslog
 
 
 def detect_type(path: Path) -> str:
@@ -23,6 +23,8 @@ def detect_type(path: Path) -> str:
 def load_entries(path: Path, log_type: str) -> Iterable:
     if log_type == "nginx":
         return nginx.parse_file(path)
+    if log_type == "auth":
+        return syslog.parse_file(path)
     raise SystemExit(f"unsupported log type: {log_type}")
 
 
@@ -33,8 +35,12 @@ def cmd_parse(args: argparse.Namespace) -> int:
 
 
 def cmd_stats(args: argparse.Namespace) -> int:
-    entries = load_entries(args.path, args.type or detect_type(args.path))
-    summary = stats.summarize_access(entries)
+    log_type = args.type or detect_type(args.path)
+    entries = load_entries(args.path, log_type)
+    if log_type == "auth":
+        summary = stats.summarize_auth(entries)
+    else:
+        summary = stats.summarize_access(entries)
     print(json.dumps(summary, indent=2))
     return 0
 

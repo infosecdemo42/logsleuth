@@ -1,0 +1,20 @@
+Aug  3 06:12:01 bastion CRON[2210]: pam_unix(cron:session): session opened for user root by (uid=0)
+Aug  3 06:12:01 bastion CRON[2210]: pam_unix(cron:session): session closed for user root
+Aug  3 06:14:22 bastion sshd[2301]: Accepted publickey for deploy from 203.0.113.42 port 50122 ssh2: ED25519 SHA256:3f1b8f6c2b7d4e9a0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b
+Aug  3 06:14:22 bastion sshd[2301]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Aug  3 06:31:05 bastion sshd[2410]: Invalid user admin from 198.51.100.23 port 41022
+Aug  3 06:31:05 bastion sshd[2410]: Failed password for invalid user admin from 198.51.100.23 port 41022 ssh2
+Aug  3 06:31:08 bastion sshd[2412]: Failed password for invalid user admin from 198.51.100.23 port 41030 ssh2
+Aug  3 06:31:11 bastion sshd[2414]: Failed password for root from 198.51.100.23 port 41044 ssh2
+Aug  3 06:31:13 bastion sshd[2416]: Failed password for root from 198.51.100.23 port 41050 ssh2
+Aug  3 06:31:16 bastion sshd[2418]: Failed password for invalid user oracle from 198.51.100.23 port 41061 ssh2
+Aug  3 06:31:19 bastion sshd[2420]: Failed password for invalid user postgres from 198.51.100.23 port 41070 ssh2
+Aug  3 06:31:19 bastion sshd[2420]: Connection closed by invalid user postgres 198.51.100.23 port 41070 [preauth]
+Aug  3 07:02:44 bastion sudo:   deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/systemctl restart nginx
+Aug  3 07:02:44 bastion sudo: pam_unix(sudo:session): session opened for user root by deploy(uid=1001)
+Aug  3 07:02:45 bastion sudo: pam_unix(sudo:session): session closed for user root
+Aug  3 07:15:30 bastion sshd[2590]: Failed password for alice from 192.0.2.77 port 60012 ssh2
+Aug  3 07:15:36 bastion sshd[2590]: Accepted password for alice from 192.0.2.77 port 60012 ssh2
+Aug  3 07:15:36 bastion sshd[2590]: pam_unix(sshd:session): session opened for user alice by (uid=0)
+Aug  3 08:00:01 bastion CRON[2701]: pam_unix(cron:session): session opened for user root by (uid=0)
+Aug  3 08:00:01 bastion CRON[2701]: pam_unix(cron:session): session closed for user root
