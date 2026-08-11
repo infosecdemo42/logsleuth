@@ -27,3 +27,9 @@ def test_stats_auth(auth_log, capsys):
     summary = json.loads(capsys.readouterr().out)
     assert summary["failed_logins"] == 7
     assert summary["accepted_users"] == ["alice", "deploy"]
+
+
+def test_export_csv_to_file(access_log, tmp_path):
+    out = tmp_path / "out.csv"
+    assert cli.main(["export", str(access_log), "--format", "csv", "-o", str(out)]) == 0
+    assert out.read_text().splitlines()[0].startswith("ip,user,time")

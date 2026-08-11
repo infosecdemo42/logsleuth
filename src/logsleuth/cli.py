@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 from typing import Iterable, Optional, Sequence
 
-from logsleuth import stats
+from logsleuth import export, stats
 from logsleuth.parsers import nginx, syslog
 
 
@@ -45,6 +45,16 @@ def cmd_stats(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_export(args: argparse.Namespace) -> int:
+    entries = load_entries(args.path, args.type or detect_type(args.path))
+    text = export.render(entries, args.format)
+    if args.output:
+        args.output.write_text(text, encoding="utf-8")
+    else:
+        sys.stdout.write(text)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="logsleuth",
@@ -61,6 +71,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_stats.add_argument("path", type=Path)
     p_stats.add_argument("--type", choices=["nginx", "auth"], default=None)
     p_stats.set_defaults(func=cmd_stats)
+
+    p_export = sub.add_parser("export", help="write entries as JSON or CSV")
+    p_export.add_argument("path", type=Path)
+    p_export.add_argument("--type", choices=["nginx", "auth"], default=None)
+    p_export.add_argument("--format", choices=export.FORMATS, default="json")
+    p_export.add_argument("-o", "--output", type=Path, default=None)
+    p_export.set_defaults(func=cmd_export)
 
     return parser
 
