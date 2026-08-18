@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 from typing import Iterable, Optional, Sequence
 
-from logsleuth import export, stats
+from logsleuth import config, export, stats
 from logsleuth.parsers import nginx, syslog
 
 
@@ -60,6 +60,10 @@ def build_parser() -> argparse.ArgumentParser:
         prog="logsleuth",
         description="Parse and triage common server logs.",
     )
+    parser.add_argument(
+        "--config", dest="config_path", type=Path, default=None,
+        help=f"config file (default: {config.DEFAULT_PATH})",
+    )
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_parse = sub.add_parser("parse", help="print each entry as JSON")
@@ -85,6 +89,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    args.config = config.load_config(getattr(args, "config_path", None))
+    if getattr(args, "type", None) is None and args.config["default_type"]:
+        args.type = args.config["default_type"]
     return args.func(args)
 
 
