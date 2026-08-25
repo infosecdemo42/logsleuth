@@ -33,3 +33,22 @@ def test_export_csv_to_file(access_log, tmp_path):
     out = tmp_path / "out.csv"
     assert cli.main(["export", str(access_log), "--format", "csv", "-o", str(out)]) == 0
     assert out.read_text().splitlines()[0].startswith("ip,user,time")
+
+
+def test_filter_by_status_class(access_log, capsys):
+    assert cli.main(["filter", str(access_log), "--status", "5xx"]) == 0
+    lines = capsys.readouterr().out.strip().splitlines()
+    assert len(lines) == 3
+    assert all(json.loads(l)["status"] >= 500 for l in lines)
+
+
+def test_filter_no_match_exits_1(access_log, capsys):
+    assert cli.main(["filter", str(access_log), "--ip", "203.0.113.99"]) == 1
+    assert capsys.readouterr().out == ""
+
+
+def test_status_spec_matching():
+    assert cli._status_matches(404, "404")
+    assert cli._status_matches(404, "4xx")
+    assert cli._status_matches(404, "400-499")
+    assert not cli._status_matches(500, "4xx")
