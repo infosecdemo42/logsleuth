@@ -1,0 +1,26 @@
+name: Bug report
+description: Something is not working as documented
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: logsleuth version
+      placeholder: "0.2.0"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include a minimal log sample. Redact real IPs and hostnames.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour (include tracebacks)
