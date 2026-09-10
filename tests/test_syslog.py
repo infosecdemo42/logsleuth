@@ -48,3 +48,18 @@ def test_parse_file_counts(auth_log):
     entries = list(syslog.parse_file(auth_log))
     assert len(entries) == 20
     assert sum(1 for e in entries if e.failed_login) == 7
+
+
+def test_year_rollover_for_december_read_in_january():
+    from datetime import datetime
+
+    line = "Dec 31 23:59:58 bastion sshd[10]: Accepted publickey for deploy from 203.0.113.42 port 1 ssh2"
+    entry = syslog.parse_line(line, now=datetime(2027, 1, 2, 8, 0, 0))
+    assert entry.time.year == 2026
+
+
+def test_same_month_uses_current_year():
+    from datetime import datetime
+
+    entry = syslog.parse_line(FAILED, now=datetime(2026, 8, 20))
+    assert entry.time.year == 2026
