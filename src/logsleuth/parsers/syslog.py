@@ -64,8 +64,15 @@ class SyslogEntry:
 
 
 def _infer_year(month: int, now: Optional[datetime] = None) -> int:
-    """BSD syslog timestamps carry no year; assume the current one."""
+    """BSD syslog timestamps carry no year.
+
+    Assume the current year unless the month is later than the current month,
+    in which case the entry must be from last year (e.g. a December line read
+    in January).
+    """
     now = now or datetime.now()
+    if month > now.month:
+        return now.year - 1
     return now.year
 
 
