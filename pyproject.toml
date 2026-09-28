@@ -19,7 +19,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Topic :: System :: Logging",
 ]
-dependencies = []
+dependencies = ["click>=8.1"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "pytest-cov>=5.0"]
