@@ -1,0 +1,6 @@
+# Default owner for everything in the repo.
+*                       @infosecdemo42
+
+# Parsers are the most fragile part; always loop in the maintainer.
+/src/logsleuth/parsers/ @infosecdemo42
+/.github/               @infosecdemo42
