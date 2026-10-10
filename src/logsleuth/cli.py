@@ -81,6 +81,17 @@ def cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def _filter_args(sp: argparse.ArgumentParser) -> None:
+    sp.add_argument("--ip", help="exact client IP")
+    sp.add_argument("--status", help="HTTP status: 404, 4xx or 400-499 (nginx only)")
+    sp.add_argument("--contains", help="substring in path or message")
+
+
+def _export_args(sp: argparse.ArgumentParser) -> None:
+    sp.add_argument("--format", choices=export.FORMATS, default="json")
+    sp.add_argument("-o", "--output", type=Path, default=None)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="logsleuth",
@@ -92,30 +103,20 @@ def build_parser() -> argparse.ArgumentParser:
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_parse = sub.add_parser("parse", help="print each entry as JSON")
-    p_parse.add_argument("path", type=Path)
-    p_parse.add_argument("--type", choices=["nginx", "auth"], default=None)
-    p_parse.set_defaults(func=cmd_parse)
-
-    p_stats = sub.add_parser("stats", help="summarise a log file")
-    p_stats.add_argument("path", type=Path)
-    p_stats.add_argument("--type", choices=["nginx", "auth"], default=None)
-    p_stats.set_defaults(func=cmd_stats)
-
-    p_filter = sub.add_parser("filter", help="print entries matching criteria")
-    p_filter.add_argument("path", type=Path)
-    p_filter.add_argument("--type", choices=["nginx", "auth"], default=None)
-    p_filter.add_argument("--ip", help="exact client IP")
-    p_filter.add_argument("--status", help="HTTP status: 404, 4xx or 400-499 (nginx only)")
-    p_filter.add_argument("--contains", help="substring in path or message")
-    p_filter.set_defaults(func=cmd_filter)
-
-    p_export = sub.add_parser("export", help="write entries as JSON or CSV")
-    p_export.add_argument("path", type=Path)
-    p_export.add_argument("--type", choices=["nginx", "auth"], default=None)
-    p_export.add_argument("--format", choices=export.FORMATS, default="json")
-    p_export.add_argument("-o", "--output", type=Path, default=None)
-    p_export.set_defaults(func=cmd_export)
+    # Each subcommand: (name, help, handler, extra argument builder)
+    subcommands = [
+        ("parse", "print each entry as JSON", cmd_parse, None),
+        ("stats", "summarise a log file", cmd_stats, None),
+        ("filter", "print entries matching criteria", cmd_filter, _filter_args),
+        ("export", "write entries as JSON or CSV", cmd_export, _export_args),
+    ]
+    for name, help_text, handler, extra in subcommands:
+        sp = sub.add_parser(name, help=help_text)
+        sp.add_argument("path", type=Path)
+        sp.add_argument("--type", choices=["nginx", "auth"], default=None)
+        if extra is not None:
+            extra(sp)
+        sp.set_defaults(func=handler)
 
     return parser
 
