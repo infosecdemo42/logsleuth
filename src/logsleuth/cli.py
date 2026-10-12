@@ -12,6 +12,9 @@ from logsleuth import config, export, stats
 from logsleuth.parsers import nginx, syslog
 
 
+LOG_TYPES = ("nginx", "auth")
+
+
 def detect_type(path: Path) -> str:
     """Guess the log type from the filename."""
     name = path.name.lower()
@@ -92,27 +95,27 @@ def build_parser() -> argparse.ArgumentParser:
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
+    def add_input_args(sp: argparse.ArgumentParser) -> None:
+        sp.add_argument("path", type=Path, help="log file to read")
+        sp.add_argument("--type", choices=LOG_TYPES, default=None, help="override detection")
+
     p_parse = sub.add_parser("parse", help="print each entry as JSON")
-    p_parse.add_argument("path", type=Path)
-    p_parse.add_argument("--type", choices=["nginx", "auth"], default=None)
+    add_input_args(p_parse)
     p_parse.set_defaults(func=cmd_parse)
 
     p_stats = sub.add_parser("stats", help="summarise a log file")
-    p_stats.add_argument("path", type=Path)
-    p_stats.add_argument("--type", choices=["nginx", "auth"], default=None)
+    add_input_args(p_stats)
     p_stats.set_defaults(func=cmd_stats)
 
     p_filter = sub.add_parser("filter", help="print entries matching criteria")
-    p_filter.add_argument("path", type=Path)
-    p_filter.add_argument("--type", choices=["nginx", "auth"], default=None)
+    add_input_args(p_filter)
     p_filter.add_argument("--ip", help="exact client IP")
     p_filter.add_argument("--status", help="HTTP status: 404, 4xx or 400-499 (nginx only)")
     p_filter.add_argument("--contains", help="substring in path or message")
     p_filter.set_defaults(func=cmd_filter)
 
     p_export = sub.add_parser("export", help="write entries as JSON or CSV")
-    p_export.add_argument("path", type=Path)
-    p_export.add_argument("--type", choices=["nginx", "auth"], default=None)
+    add_input_args(p_export)
     p_export.add_argument("--format", choices=export.FORMATS, default="json")
     p_export.add_argument("-o", "--output", type=Path, default=None)
     p_export.set_defaults(func=cmd_export)
