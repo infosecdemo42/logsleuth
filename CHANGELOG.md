@@ -5,6 +5,9 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- **Breaking:** Python 3.11 or newer is now required (#12). The `tomli` fallback is gone.
+
 ## [0.2.0] - 2026-09-22
 
 ### Added
