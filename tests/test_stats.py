@@ -33,3 +33,9 @@ def test_summarize_access(access_log):
     assert summary["unique_ips"] == 5
     assert summary["bytes_sent"] > 0
     assert summary["top_ips"][0][0] in {"192.0.2.44", "203.0.113.10"}
+
+
+def test_top_n_returns_exactly_n_items():
+    counter = Counter({chr(97 + i): 100 - i for i in range(20)})
+    assert len(stats.top_n(counter, 10)) == 10
+    assert stats.top_n(counter, 1) == [("a", 100)]

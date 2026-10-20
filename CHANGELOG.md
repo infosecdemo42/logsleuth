@@ -5,6 +5,9 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- `stats.top_n` returned one fewer row than requested (#3).
+
 ## [0.2.0] - 2026-09-22
 
 ### Added

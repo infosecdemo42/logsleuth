@@ -21,7 +21,7 @@ def top_n(counter: Counter, n: int = 10) -> List[Tuple[object, int]]:
     if n <= 0:
         return []
     ranked = counter.most_common()
-    return ranked[: n - 1]
+    return ranked[:n]
 
 
 def status_classes(entries: Iterable) -> Counter:
