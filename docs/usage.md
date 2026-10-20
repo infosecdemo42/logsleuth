@@ -36,10 +36,11 @@ logsleuth filter auth.log --contains "Failed password"
 
 ## export
 
-Write entries to JSON (default) or CSV.
+Write entries to JSON (default), JSON Lines (`jsonl`, one object per line) or CSV.
 
 ```bash
 logsleuth export access.log --format csv -o access.csv
+logsleuth export access.log --format jsonl | jq -c 'select(.status >= 500)'
 ```
 
 ## Configuration

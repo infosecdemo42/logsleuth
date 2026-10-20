@@ -114,7 +114,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_filter.add_argument("--contains", help="substring in path or message")
     p_filter.set_defaults(func=cmd_filter)
 
-    p_export = sub.add_parser("export", help="write entries as JSON or CSV")
+    p_export = sub.add_parser("export", help="write entries as JSON, JSON Lines or CSV")
     add_input_args(p_export)
     p_export.add_argument("--format", choices=export.FORMATS, default="json")
     p_export.add_argument("-o", "--output", type=Path, default=None)
