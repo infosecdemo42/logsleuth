@@ -8,7 +8,7 @@ version = "0.2.0"
 description = "Parse and triage common server logs from the command line."
 readme = "README.md"
 license = { text = "MIT" }
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 authors = [{ name = "infosecdemo42" }]
 keywords = ["logs", "nginx", "syslog", "security", "cli"]
 classifiers = [
@@ -17,6 +17,9 @@ classifiers = [
   "Intended Audience :: System Administrators",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: System :: Logging",
 ]
 dependencies = []
