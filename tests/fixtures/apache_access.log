@@ -1,0 +1,4 @@
+203.0.113.77 - - [18/Oct/2026:12:00:01 +0000] "GET /index.html HTTP/1.1" 200 3471 "-" "Mozilla/5.0 (X11; Linux x86_64) Firefox/128.0"
+203.0.113.77 - frank [18/Oct/2026:12:00:09 +0000] "GET /private/report.pdf HTTP/1.1" 200 88211 "https://intranet.example.com/" "Mozilla/5.0 (X11; Linux x86_64) Firefox/128.0"
+crawler.example.net - - [18/Oct/2026:12:01:30 +0000] "GET /robots.txt HTTP/1.1" 200 68 "-" "ExampleBot/1.0"
+198.51.100.9 - - [18/Oct/2026:12:02:14 +0000] "HEAD /status HTTP/1.1" 204 - "-" "curl/8.7.1"
